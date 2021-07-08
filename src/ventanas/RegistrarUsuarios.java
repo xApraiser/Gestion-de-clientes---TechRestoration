@@ -31,7 +31,7 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
         user = Login.user;
         
         setTitle("Registrar nuevo usuario - Sesión de " + user);
-        setSize(630,350);
+        setSize(630,370);
         setResizable(false);
         setLocationRelativeTo(null);
         
@@ -162,7 +162,7 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
         getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 300, -1, -1));
 
         jLabel_Wallpaper.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 350));
+        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 370));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -170,7 +170,7 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
         int permisos_cmb, validacion = 0;
-        String nombre, mail, telefono, username, pass, permisos_string;
+        String nombre, mail, telefono, username, pass, permisos_string = "";
         
         mail = txt_mail.getText().trim();
         username = txt_username.getText().trim();
@@ -223,6 +223,47 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "nombre de usuario no disposinible.");
                 cn.close();
             } else {
+                
+                cn.close();
+                
+                if(validacion == 0){
+                    try{
+                        Connection cn2 = Conexion.conectar();
+                        PreparedStatement pst2 = cn2.prepareStatement(
+                            "insert into usuarios values (?,?,?,?,?,?,?,?,?)"); 
+                        
+                        pst2.setInt(1, 0);
+                        pst2.setString(2, nombre);
+                        pst2.setString(3, mail);
+                        pst2.setString(4, telefono);
+                        pst2.setString(5, username);
+                        pst2.setString(6, pass);
+                        pst2.setString(7, permisos_string);
+                        pst2.setString(8, "Activo");
+                        pst2.setString(9, user);
+                        
+                        pst2.executeUpdate();
+                        
+                        cn2.close();
+                        
+                        Limpiar();
+                        
+                        txt_mail.setBackground(Color.green);
+                        txt_username.setBackground(Color.green);
+                        txt_password.setBackground(Color.green);
+                        txt_nombre.setBackground(Color.green);
+                        txt_telefono.setBackground(Color.green);
+                        
+                        JOptionPane.showMessageDialog(null, "Se ha registrado el usuario");
+                        this.dispose();
+                        
+                    } catch(SQLException e){
+                        System.err.println("Error en registro de usuario. " + e);
+                        JOptionPane.showMessageDialog(null, "¡Error al registrar!, contactar al administrador");
+                    }
+                } else{
+                    JOptionPane.showMessageDialog(null, "Debes ingresar toda la informacion solicitada");
+                }
                 
             }
             
@@ -286,4 +327,14 @@ public class RegistrarUsuarios extends javax.swing.JFrame {
     private javax.swing.JTextField txt_telefono;
     private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
+
+    public void Limpiar(){
+        txt_mail.setText("");
+        txt_nombre.setText("");
+        txt_password.setText("");
+        txt_telefono.setText("");
+        txt_username.setText("");
+        cmb_niveles.setSelectedIndex(0);
+    }
+
 }

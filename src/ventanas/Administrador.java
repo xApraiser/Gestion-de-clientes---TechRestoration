@@ -29,7 +29,7 @@ public class Administrador extends javax.swing.JFrame {
         user = Login.user;
         sesion_usuario = 1;
         
-        setSize(650, 430);
+        setSize(650, 470);
         setResizable(false);
         setTitle("Administrador - Sesión de " + user);
         setLocationRelativeTo(null);
@@ -102,6 +102,11 @@ public class Administrador extends javax.swing.JFrame {
         getContentPane().add(jButton_RegistrarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 120, 100));
 
         jButton_ModificarUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/modificarusuario.png"))); // NOI18N
+        jButton_ModificarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_ModificarUsuarioActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_ModificarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 60, 120, 100));
 
         jButton_AccesoRecepcionista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/recepcionista.png"))); // NOI18N
@@ -129,7 +134,7 @@ public class Administrador extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Dashboard Administrador");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 400, -1, -1));
-        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 0, 650, 430));
+        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 0, 650, 470));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -140,6 +145,13 @@ public class Administrador extends javax.swing.JFrame {
         registrarUsuarios.setVisible(true);
         
     }//GEN-LAST:event_jButton_RegistrarUsuarioActionPerformed
+
+    private void jButton_ModificarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ModificarUsuarioActionPerformed
+        
+        ModificarUsuarios modificarUsuarios = new ModificarUsuarios();
+        modificarUsuarios.setVisible(true);
+        
+    }//GEN-LAST:event_jButton_ModificarUsuarioActionPerformed
 
     /**
      * @param args the command line arguments

@@ -27,7 +27,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
-        setSize(400,550);
+        setSize(400,570);
         setResizable(false);
         setTitle("Acceso al sistema");
         setLocationRelativeTo(null);
@@ -119,7 +119,7 @@ public class Login extends javax.swing.JFrame {
         getContentPane().add(jButton_IniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 370, 210, 35));
 
         jLabel_Wallpaper.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 400, 550));
+        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 400, 570));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
