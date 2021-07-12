@@ -97,7 +97,7 @@ public class ModificarUsuarios extends javax.swing.JFrame {
     }
 
     @Override
-    public Image getIconImage() {
+    public Image getIconImage(){
         Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("imagenes/Logo_TechSinFondo.png"));
         return retValue;
     }

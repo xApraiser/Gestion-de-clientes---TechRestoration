@@ -7,10 +7,12 @@ package ventanas;
 
 import java.sql.*;
 import clases.Conexion;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 /**
@@ -42,7 +44,32 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jLabel_Wallpaper.setIcon(icono);
         this.repaint();
         
-        jLabel_titulo.setText("Informacion del usuario " + user_update);
+        jLabel_titulo.setText("Informacion del usuario: " + user_update);
+        
+        try{
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                "select * from usuarios where username = '" + user_update + "'");
+            ResultSet rs = pst.executeQuery();
+            
+            if(rs.next()){
+                ID = rs.getInt("id_usuario");
+                
+                txt_nombre.setText(rs.getString("nombre_usuario"));
+                txt_mail.setText(rs.getString("email"));
+                txt_telefono.setText(rs.getString("telefono"));
+                txt_username.setText(rs.getString("username"));
+                txt_RegistradoPor.setText(rs.getString("registrado_por"));
+                
+                cmb_niveles.setSelectedItem(rs.getString("tipo_nivel"));
+                cmb_estatus.setSelectedItem(rs.getString("estatus"));
+            }
+            
+            cn.close();
+        } catch (SQLException e){
+            System.err.println("Error en cargar ususario: " + e);
+            JOptionPane.showMessageDialog(null, "¡¡Erroe al cargar!!, contacte al administrador");
+        }
         
     }
     
@@ -82,6 +109,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImages(getIconImages());
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel_titulo.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -171,6 +199,11 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jButton_Actualizar.setForeground(new java.awt.Color(255, 255, 255));
         jButton_Actualizar.setText("Actualizar Usuario");
         jButton_Actualizar.setBorder(null);
+        jButton_Actualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_ActualizarActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_Actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 250, 210, 35));
 
         jButton_RestaurarPassword.setBackground(new java.awt.Color(153, 153, 240));
@@ -178,6 +211,11 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jButton_RestaurarPassword.setForeground(new java.awt.Color(255, 255, 255));
         jButton_RestaurarPassword.setText("Restaurar Password");
         jButton_RestaurarPassword.setBorder(null);
+        jButton_RestaurarPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_RestaurarPasswordActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_RestaurarPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 300, 210, 35));
 
         jLabel_Footer.setForeground(new java.awt.Color(255, 255, 255));
@@ -187,6 +225,105 @@ public class InformacionUsuario extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton_ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ActualizarActionPerformed
+        
+        int permisos_cmb, estatus_cmb, validacion = 0;
+        String nombre, mail, telefono, username, pass, permisos_string = "", estatus_string = "";
+        
+        mail = txt_mail.getText().trim();
+        username = txt_username.getText().trim();
+        nombre = txt_nombre.getText().trim();
+        telefono = txt_telefono.getText().trim();
+        permisos_cmb = cmb_niveles.getSelectedIndex() + 1;
+        estatus_cmb = cmb_estatus.getSelectedIndex() + 1;
+        
+        if(mail.equals("")){
+            txt_mail.setBackground(Color.red);
+            validacion++;
+        }
+        
+        if(username.equals("")){
+            txt_username.setBackground(Color.red);
+            validacion++;
+        }
+        
+        if(nombre.equals("")){
+            txt_nombre.setBackground(Color.red);
+            validacion++;
+        }
+        
+        if(telefono.equals("")){
+            txt_telefono.setBackground(Color.red);
+            validacion++;
+        }
+        
+        if(validacion == 0){
+            
+            if(permisos_cmb == 1){
+                permisos_string = "Administrador";
+            } else if(permisos_cmb == 2){
+                permisos_string = "Recepcionista";
+            } else if(permisos_cmb == 3){
+                permisos_string = "Tecnico";
+            }
+            
+            if(estatus_cmb == 1){
+                estatus_string = "Activo";
+            } else if(estatus_cmb == 2){
+                estatus_string = "Inactivo";
+            }
+            
+            try{
+                Connection cn = Conexion.conectar();
+                PreparedStatement pst = cn.prepareStatement(
+                    "select username from usuarios where username = '" + username + "' and not id_usuario = '" + ID + "'");
+                ResultSet rs = pst.executeQuery();
+                
+                if(rs.next()){
+                    txt_username.setBackground(Color.red);
+                    JOptionPane.showMessageDialog(null, "Nombre de usuario no disponible");
+                    cn.close();
+                } else {
+                    
+                    cn.close();
+                    
+                    Connection cn2 = Conexion.conectar();
+                    PreparedStatement pst2 = cn2.prepareStatement(
+                        "update usuarios set nombre_usuario=?, email=?, telefono=?, username=?, tipo_nivel=?, estatus=? where id_usuario = '" + ID + "'");
+                    
+                    pst2.setString(1, nombre);
+                    pst2.setString(2, mail);
+                    pst2.setString(3, telefono);
+                    pst2.setString(4, username);
+                    pst2.setString(5, permisos_string);
+                    pst2.setString(6, estatus_string);
+                    
+                    pst2.executeUpdate();
+                    cn2.close();
+                    
+                    JOptionPane.showMessageDialog(null, "Modificacion correcta");
+                    
+                    
+                    
+                } 
+                
+            } catch (SQLException e){
+                System.err.println("Error al actualizar: " + e);
+            }
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe llenar todos los cambpos");
+        }
+        
+    }//GEN-LAST:event_jButton_ActualizarActionPerformed
+
+    private void jButton_RestaurarPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RestaurarPasswordActionPerformed
+        
+        RestaurarPassword restaurarPassword = new RestaurarPassword();
+        restaurarPassword.setVisible(true);
+        
+    }//GEN-LAST:event_jButton_RestaurarPasswordActionPerformed
 
     /**
      * @param args the command line arguments
