@@ -6,11 +6,13 @@
 package ventanas;
 
 import clases.Conexion;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.sql.*;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 /**
@@ -148,7 +150,66 @@ public class RegistrarClientes extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
+        int validacion = 0;
+        String nombre, mail, telefono, direccion;
         
+        nombre = txt_nombre.getText().trim();
+        mail = txt_mail.getText().trim();
+        telefono = txt_telefono.getText().trim();
+        direccion = txt_direccion.getText().trim();
+        
+        if(nombre.equals("")){
+            txt_nombre.setBackground(Color.red);
+            validacion++;
+        }
+        if(mail.equals("")){
+            txt_mail.setBackground(Color.red);
+            validacion++;
+        }
+        if(telefono.equals("")){
+            txt_telefono.setBackground(Color.red);
+            validacion++;
+        }
+        if(direccion.equals("")){
+            txt_direccion.setBackground(Color.red);
+            validacion++;
+        }
+        
+        if(validacion == 0){
+            
+            try{
+                
+                Connection cn = Conexion.conectar();
+                PreparedStatement pst = cn.prepareStatement(
+                    "insert into clientes values (?,?,?,?,?,?)");
+                pst.setInt(1, 0);
+                pst.setString(2, nombre );
+                pst.setString(3, mail);
+                pst.setString(4, telefono);
+                pst.setString(5, direccion);
+                pst.setString(6, user);
+                
+                pst.executeUpdate();
+                cn.close();
+                
+                Limpiar();
+                
+                txt_nombre.setBackground(Color.green);
+                txt_mail.setBackground(Color.green);
+                txt_telefono.setBackground(Color.green);
+                txt_direccion.setBackground(Color.green);
+                
+                JOptionPane.showMessageDialog(null, "Registro exitoso");
+                this.dispose();
+                
+            } catch (SQLException e) {
+                System.out.println("Error en registrar cliente: " + e);
+                JOptionPane.showMessageDialog(null, "¡¡Error en registrar usuario!! avisa a un administrador");
+            }
+            
+        } else {
+           JOptionPane.showMessageDialog(null, "Debes llenar todos los campos");
+        }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -202,4 +263,12 @@ public class RegistrarClientes extends javax.swing.JFrame {
     private javax.swing.JTextField txt_nombre;
     private javax.swing.JTextField txt_telefono;
     // End of variables declaration//GEN-END:variables
+
+    
+    public void Limpiar(){
+        txt_nombre.setText("");
+        txt_mail.setText("");
+        txt_telefono.setText("");
+        txt_direccion.setText("");
+    }
 }

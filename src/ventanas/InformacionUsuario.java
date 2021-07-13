@@ -109,6 +109,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
         jLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
         setIconImages(getIconImages());
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -219,7 +220,7 @@ public class InformacionUsuario extends javax.swing.JFrame {
         getContentPane().add(jButton_RestaurarPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 300, 210, 35));
 
         jLabel_Footer.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel_Footer.setText("Informacion del usuario");
+        jLabel_Footer.setText("Informacion del Usuario");
         getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 390, -1, -1));
         getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 460));
 

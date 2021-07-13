@@ -42,7 +42,7 @@ public class Recepcionista extends javax.swing.JFrame {
         sesion_usuario = Administrador.sesion_usuario;
         
         
-        setSize(550, 300);
+        setSize(550, 320);
         setResizable(false);
         setTitle("Recepcionista - Sesión de " + user);
         setLocationRelativeTo(null);
@@ -162,7 +162,8 @@ public class Recepcionista extends javax.swing.JFrame {
 
     private void jButton_GestionarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_GestionarClienteActionPerformed
 
-        
+        GestionarClientes gestionarClientes = new GestionarClientes();
+        gestionarClientes.setVisible(true);
 
     }//GEN-LAST:event_jButton_GestionarClienteActionPerformed
 
