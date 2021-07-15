@@ -17,21 +17,27 @@ import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
+import static ventanas.GestionarClientes.IDcliente_update;
 
 /**
  *
  * @author Asus
  */
 public class Informacion_Cliente extends javax.swing.JFrame {
-    
+
     DefaultTableModel model = new DefaultTableModel();
-    
+
     int IDcliente_update = 0;
     public static int IDequipo = 0;
     String user = "";
@@ -43,22 +49,90 @@ public class Informacion_Cliente extends javax.swing.JFrame {
         initComponents();
         user = Login.user;
         IDcliente_update = GestionarClientes.IDcliente_update;
-        
+
         setSize(640, 470);
         setResizable(false);
         setLocationRelativeTo(null);
-        
+
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        
+
         ImageIcon wallpaper = new ImageIcon("src/imagenes/wallpapertech.jpg");
         Icon icono = new ImageIcon(wallpaper.getImage().getScaledInstance(jLabel_Wallpaper.getWidth(), jLabel_Wallpaper.getHeight(), Image.SCALE_DEFAULT));
         jLabel_Wallpaper.setIcon(icono);
         this.repaint();
-        
+
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                    "select * from clientes where id_cliente = '" + IDcliente_update + "'");
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                setTitle("Informacion del cliente " + rs.getString("nombre_cliente") + " - Sesión de " + user);
+                jLabel_titulo.setText("Informacion del cliente " + rs.getString("nombre_cliente"));
+
+                txt_nombre.setText(rs.getString("nombre_cliente"));
+                txt_mail.setText(rs.getString("email_cliente"));
+                txt_telefono.setText(rs.getString("telefono_cliente"));
+                txt_direccion.setText(rs.getString("direcion_cliente"));
+                txt_UltimaModificacion.setText(rs.getString("ult_modificacion"));
+
+            }
+            cn.close();
+
+        } catch (SQLException e) {
+            System.err.println("Error al cargar usuario" + e);
+            JOptionPane.showMessageDialog(null, "¡¡Error al cargar!!, contacte a un administrador");
+        }
+
+        try {
+            Connection cn = Conexion.conectar();
+            PreparedStatement pst = cn.prepareStatement(
+                    "select id_equipo, tipo_equipo, marca, estatus from equipos where id_cliente = '" + IDcliente_update + "'");
+            ResultSet rs = pst.executeQuery();
+
+            jTable_equipos = new JTable(model);
+            jScrollPane_equipos.setViewportView(jTable_equipos);
+
+            model.addColumn("ID Equipo");
+            model.addColumn("Tipo de equipo");
+            model.addColumn("Marca");
+            model.addColumn("Estatus");
+
+            while (rs.next()) {
+                Object[] fila = new Object[4];
+
+                for (int i = 0; i < 4; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+                model.addRow(fila);
+            }
+            cn.close();
+
+        } catch (SQLException e) {
+            System.err.println("Error en el llenado de la tabla equipo" + e);
+
+        }
+
+        jTable_equipos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int fila_point = jTable_equipos.rowAtPoint(e.getPoint());
+                int columna_point = 0;
+
+                if (fila_point > -1) {
+                    IDequipo = (int) model.getValueAt(fila_point, columna_point);
+                    Informacion_Cliente informacion_cliente = new Informacion_Cliente();
+                    informacion_cliente.setVisible(true);
+                }
+
+            }
+        });
+
     }
-    
+
     @Override
-    public Image getIconImage(){
+    public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("imagenes/Logo_TechSinFondo.png"));
         return retValue;
     }
@@ -72,7 +146,7 @@ public class Informacion_Cliente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane_equipos = new javax.swing.JScrollPane();
         jTable_equipos = new javax.swing.JTable();
         jLabel_titulo = new javax.swing.JLabel();
         jLabel_Nombre = new javax.swing.JLabel();
@@ -106,9 +180,9 @@ public class Informacion_Cliente extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable_equipos);
+        jScrollPane_equipos.setViewportView(jTable_equipos);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, 380, 180));
+        getContentPane().add(jScrollPane_equipos, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 70, 380, 180));
 
         jLabel_titulo.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel_titulo.setForeground(new java.awt.Color(255, 255, 255));
@@ -213,13 +287,78 @@ public class Informacion_Cliente extends javax.swing.JFrame {
 
     private void jButton_RegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RegistrarActionPerformed
 
-        
+        RegistrarEquipo registrar_equipo = new RegistrarEquipo();
+        registrar_equipo.setVisible(true);
 
     }//GEN-LAST:event_jButton_RegistrarActionPerformed
 
     private void jButton_ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ActualizarActionPerformed
 
-        
+        int validacion = 0;
+        String nombre, mail, telefono, direccion;
+
+        nombre = txt_nombre.getText().trim();
+        mail = txt_mail.getText().trim();
+        telefono = txt_telefono.getText().trim();
+        direccion = txt_direccion.getText().trim();
+
+        if (nombre.equals("")) {
+            txt_nombre.setBackground(Color.red);
+            validacion++;
+        }
+
+        if (mail.equals("")) {
+            txt_mail.setBackground(Color.red);
+            validacion++;
+        }
+
+        if (telefono.equals("")) {
+            txt_telefono.setBackground(Color.red);
+            validacion++;
+        }
+
+        if (direccion.equals("")) {
+            txt_direccion.setBackground(Color.red);
+            validacion++;
+        }
+
+        if (validacion == 0) {
+
+            try {
+
+                Connection cn = Conexion.conectar();
+                PreparedStatement pst = cn.prepareStatement(
+                        "update clientes set nombre_cliente=?, email_cliente=?, telefono_cliente=?, direcion_cliente=?, ult_modificacion=? "
+                        + "where id_cliente = '" + IDcliente_update + "'");
+                
+                pst.setString(1, nombre);
+                pst.setString(2, mail);
+                pst.setString(3, telefono);
+                pst.setString(4, direccion);
+                pst.setString(5, user);
+                
+                pst.executeUpdate();
+                cn.close();
+                
+                Limpiar();
+                
+                txt_nombre.setBackground(Color.green);
+                txt_mail.setBackground(Color.green);
+                txt_telefono.setBackground(Color.green);
+                txt_direccion.setBackground(Color.green);
+                txt_UltimaModificacion.setText(user);
+                
+                JOptionPane.showMessageDialog(null, "Actualizacion Correcta");
+                this.dispose();
+
+            } catch (SQLException e) {
+                System.err.println("Error en actualizar cliente " + e);
+                JOptionPane.showMessageDialog(null, "ERROR al actualizar cliente, contacta a un administrador");
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "debes llenar todos los campos");
+        }
 
     }//GEN-LAST:event_jButton_ActualizarActionPerformed
 
@@ -270,7 +409,7 @@ public class Informacion_Cliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_mail;
     private javax.swing.JLabel jLabel_telefono;
     private javax.swing.JLabel jLabel_titulo;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane_equipos;
     private javax.swing.JTable jTable_equipos;
     private javax.swing.JTextField txt_UltimaModificacion;
     private javax.swing.JTextField txt_direccion;
@@ -278,4 +417,11 @@ public class Informacion_Cliente extends javax.swing.JFrame {
     private javax.swing.JTextField txt_nombre;
     private javax.swing.JTextField txt_telefono;
     // End of variables declaration//GEN-END:variables
+
+    public void Limpiar(){
+        txt_nombre.setText("");
+        txt_mail.setText("");
+        txt_telefono.setText("");
+        txt_direccion.setText("");
+    }
 }

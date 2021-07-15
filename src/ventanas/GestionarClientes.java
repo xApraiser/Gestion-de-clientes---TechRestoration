@@ -91,9 +91,8 @@ public class GestionarClientes extends javax.swing.JFrame {
                 
                 if(fila_point > -1){
                     IDcliente_update = (int)model.getValueAt(fila_point, columna_point);
-                    JOptionPane.showMessageDialog(null, "El ID del cliente es: " + IDcliente_update);
-                    //InformacionUsuario informacion_usuario = new InformacionUsuario();
-                    //informacion_usuario.setVisible(true);
+                    Informacion_Cliente informacion_cliente = new Informacion_Cliente();
+                    informacion_cliente.setVisible(true);
                 }
                 
             }
@@ -123,6 +122,7 @@ public class GestionarClientes extends javax.swing.JFrame {
         jLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
