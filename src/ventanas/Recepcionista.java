@@ -19,8 +19,10 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.FileOutputStream;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 /**
@@ -70,7 +72,7 @@ public class Recepcionista extends javax.swing.JFrame {
             }
             
         } catch (SQLException e) {
-            System.out.println("Error en consultar nombre de racepcionista: " + e);
+            System.err.println("Error en consultar nombre de recepcionista: " + e);
         }
         
     }
@@ -169,7 +171,64 @@ public class Recepcionista extends javax.swing.JFrame {
 
     private void jButton_ImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ImprimirActionPerformed
 
+        Document documento = new Document();
         
+        try{
+            String ruta = System.getProperty("user.home");
+            PdfWriter.getInstance(documento, new FileOutputStream(ruta + "//Desktop/ListaClientes.pdf"));
+
+            com.itextpdf.text.Image header = com.itextpdf.text.Image.getInstance("src/imagenes/logo_TechRestoration.PNG");
+            header.scaleToFit(650, 1000);
+            header.setAlignment(Chunk.ALIGN_CENTER);
+
+            Paragraph parrafo = new Paragraph();
+            parrafo.setAlignment(Paragraph.ALIGN_CENTER);
+            parrafo.add("Lista de clientes. \n \n");
+            parrafo.setFont(FontFactory.getFont("Tahoma", 18, Font.BOLD, BaseColor.DARK_GRAY));
+
+            documento.open();
+            documento.add(header);
+            documento.add(parrafo);
+
+            PdfPTable tabla = new PdfPTable(5);
+            tabla.addCell("ID");
+            tabla.addCell("Nombre");
+            tabla.addCell("Email");
+            tabla.addCell("Telefono");
+            tabla.addCell("Dirección");
+            
+            try{
+                
+                Connection cn = Conexion.conectar();
+                PreparedStatement pst = cn.prepareStatement(
+                        "select * from clientes");
+
+                ResultSet rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    do {
+
+                        tabla.addCell(rs.getString(1));
+                        tabla.addCell(rs.getString(2));
+                        tabla.addCell(rs.getString(3));
+                        tabla.addCell(rs.getString(4));
+                        tabla.addCell(rs.getString(5));
+
+                    } while (rs.next());
+
+                    documento.add(tabla);
+                }
+                
+            }catch (SQLException e){
+                System.err.println("Error al cargar lista de clientes. " + e);
+            }
+            
+            documento.close();
+            JOptionPane.showMessageDialog(null, "Lista de clientes creada correctamente");
+            
+        }catch (Exception e){
+            System.err.println("Error al generar pdf" + e);
+        }
 
     }//GEN-LAST:event_jButton_ImprimirActionPerformed
 

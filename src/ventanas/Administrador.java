@@ -118,6 +118,11 @@ public class Administrador extends javax.swing.JFrame {
         getContentPane().add(jButton_AccesoRecepcionista, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 260, 120, 100));
 
         jButton_AccesoTecnico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Tecnico_1.png"))); // NOI18N
+        jButton_AccesoTecnico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_AccesoTecnicoActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton_AccesoTecnico, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 260, 120, 100));
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -162,6 +167,11 @@ public class Administrador extends javax.swing.JFrame {
         Recepcionista recepcionista = new Recepcionista();
         recepcionista.setVisible(true);
     }//GEN-LAST:event_jButton_AccesoRecepcionistaActionPerformed
+
+    private void jButton_AccesoTecnicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_AccesoTecnicoActionPerformed
+        Tecnico tecnico = new Tecnico();
+        tecnico.setVisible(true);
+    }//GEN-LAST:event_jButton_AccesoTecnicoActionPerformed
 
     /**
      * @param args the command line arguments
