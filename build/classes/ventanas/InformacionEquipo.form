@@ -352,7 +352,7 @@
     <Component class="javax.swing.JComboBox" name="cmb_marcas">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="17">
+          <StringArray count="16">
             <StringItem index="0" value="Acer"/>
             <StringItem index="1" value="HP"/>
             <StringItem index="2" value="Alienware"/>
@@ -369,7 +369,6 @@
             <StringItem index="13" value="LG"/>
             <StringItem index="14" value="MSI"/>
             <StringItem index="15" value="Microsoft"/>
-            <StringItem index="16" value="Toshiba"/>
           </StringArray>
         </Property>
       </Properties>
@@ -388,7 +387,7 @@
           <StringArray count="5">
             <StringItem index="0" value="Nuevo ingreso"/>
             <StringItem index="1" value="No reparado"/>
-            <StringItem index="2" value="En revisi&#xf3;n"/>
+            <StringItem index="2" value="En revision"/>
             <StringItem index="3" value="Reparado"/>
             <StringItem index="4" value="Entregado"/>
           </StringArray>

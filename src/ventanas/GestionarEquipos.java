@@ -36,7 +36,7 @@ public class GestionarEquipos extends javax.swing.JFrame {
         initComponents();
         user = Login.user;
 
-        setSize(630, 380);
+        setSize(650, 390);
         setResizable(false);
         setTitle("Recepcionista - Sesión de " + user);
         setLocationRelativeTo(null);
@@ -151,13 +151,61 @@ public class GestionarEquipos extends javax.swing.JFrame {
             }
         });
         getContentPane().add(Mostrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 250, 210, 35));
-        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 380));
+        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 650, 390));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void MostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MostrarActionPerformed
+        
+        String selecion = cmb_estatus.getSelectedItem().toString();
+        String query = "";
+        
+        model.setRowCount(0);
+        model.setColumnCount(0);
+        
+        try{
+            
+            Connection cn = Conexion.conectar();
+            
+            if(selecion.equalsIgnoreCase("Todos")){
+                
+                query = "select id_equipo, tipo_equipo, marca, estatus from equipos";
+                
+            }else {
+                query = "select id_equipo, tipo_equipo, marca, estatus from equipos where estatus = '" + selecion + "'";
+            }
+            
+            PreparedStatement pst = cn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            
+            jTable_equipos = new JTable(model);
+            jScrollPane_equipos.setViewportView(jTable_equipos);
+            
+            model.addColumn(" ");
+            model.addColumn("Tipo");
+            model.addColumn("Marca");
+            model.addColumn("Estatus");
+            
+            while (rs.next()) {
+                Object[] fila = new Object[4];
 
+                for (int i = 0; i < 4; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+
+                model.addRow(fila);
+
+            }
+            
+            cn.close();
+            
+        }catch (SQLException e){
+            System.err.println("Error al recuperar los registros de equipo. " + e);
+            
+        }
+        
+        ObtenerDatosTabla();
 
     }//GEN-LAST:event_MostrarActionPerformed
 
@@ -216,8 +264,8 @@ public class GestionarEquipos extends javax.swing.JFrame {
 
                 if (fila_point > -1) {
                     IDequipo_update = (int) model.getValueAt(fila_point, columna_point);
-                    Informacion_Cliente informacion_cliente = new Informacion_Cliente();
-                    informacion_cliente.setVisible(true);
+                    InformacionEquipoTecnico info = new InformacionEquipoTecnico();
+                    info.setVisible(true);
                 }
 
             }
