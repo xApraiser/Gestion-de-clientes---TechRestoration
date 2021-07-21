@@ -34,7 +34,7 @@ public class Administrador extends javax.swing.JFrame {
         setTitle("Administrador - Sesión de " + user);
         setLocationRelativeTo(null);
         
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         
         ImageIcon wallpaper = new ImageIcon("src/imagenes/wallpapertech.jpg");
         Icon icono = new ImageIcon(wallpaper.getImage().getScaledInstance(jLabel_Wallpaper.getWidth(), jLabel_Wallpaper.getHeight(), Image.SCALE_DEFAULT));

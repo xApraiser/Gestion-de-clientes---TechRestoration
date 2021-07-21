@@ -49,11 +49,9 @@ public class Recepcionista extends javax.swing.JFrame {
         setTitle("Recepcionista - Sesión de " + user);
         setLocationRelativeTo(null);
         
-        if(sesion_usuario == 1){
+        
             setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        } else {
-            setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        }
+        
         
         ImageIcon wallpaper = new ImageIcon("src/imagenes/wallpapertech.jpg");
         Icon icono = new ImageIcon(wallpaper.getImage().getScaledInstance(jLabel_Wallpaper.getWidth(), jLabel_Wallpaper.getHeight(), Image.SCALE_DEFAULT));
@@ -190,9 +188,10 @@ public class Recepcionista extends javax.swing.JFrame {
             documento.add(header);
             documento.add(parrafo);
 
-            PdfPTable tabla = new PdfPTable(5);
+            PdfPTable tabla = new PdfPTable(6);
             tabla.addCell("ID");
             tabla.addCell("Nombre");
+            tabla.addCell("RUT");
             tabla.addCell("Email");
             tabla.addCell("Telefono");
             tabla.addCell("Dirección");
@@ -213,6 +212,7 @@ public class Recepcionista extends javax.swing.JFrame {
                         tabla.addCell(rs.getString(3));
                         tabla.addCell(rs.getString(4));
                         tabla.addCell(rs.getString(5));
+                        tabla.addCell(rs.getString(6));
 
                     } while (rs.next());
 

@@ -148,13 +148,13 @@ public class Login extends javax.swing.JFrame {
                     String estatus = rs.getString("estatus");
                     
                     if(tipo_nivel.equalsIgnoreCase("Administrador") && estatus.equalsIgnoreCase("Activo")){
-                        dispose();
+                        //dispose();
                         new Administrador().setVisible(true);
                     } else if(tipo_nivel.equalsIgnoreCase("Recepcionista") && estatus.equalsIgnoreCase("Activo")){
-                        dispose();
+                        //dispose();
                         new Recepcionista().setVisible(true);
                     } else if(tipo_nivel.equalsIgnoreCase("Tecnico") && estatus.equalsIgnoreCase("Activo")){
-                        dispose();
+                        //dispose();
                         new Tecnico().setVisible(true);
                     }
                     

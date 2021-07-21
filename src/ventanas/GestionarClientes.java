@@ -36,7 +36,7 @@ public class GestionarClientes extends javax.swing.JFrame {
         initComponents();
         user = Login.user;
         
-        setSize(630, 350);
+        setSize(660, 460);
         setResizable(false);
         setTitle("Recepcionista - Sesión de " + user);
         setLocationRelativeTo(null);
@@ -52,7 +52,7 @@ public class GestionarClientes extends javax.swing.JFrame {
             
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                    "select id_cliente, nombre_cliente, email_cliente, telefono_cliente, ult_modificacion from clientes");
+                    "select id_cliente, nombre_cliente, rut_cliente, email_cliente, telefono_cliente, ult_modificacion from clientes");
             
             ResultSet rs = pst.executeQuery();
             
@@ -61,14 +61,15 @@ public class GestionarClientes extends javax.swing.JFrame {
             
             model.addColumn(" ");
             model.addColumn("Nombre");
+            model.addColumn("RUT");
             model.addColumn("Email");
             model.addColumn("Telefono");
             model.addColumn("Modificado Por");
             
             while (rs.next()) {
-                Object[] fila = new Object[5];
+                Object[] fila = new Object[6];
 
-                for (int i = 0; i < 5; i++) {
+                for (int i = 0; i < 6; i++) {
                     fila[i] = rs.getObject(i + 1);
                 }
 
@@ -83,20 +84,7 @@ public class GestionarClientes extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error al mostrar informacion, contacta a un administrador");
         }
         
-        jTable_clientes.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-                int fila_point = jTable_clientes.rowAtPoint(e.getPoint());
-                int columna_point = 0;
-                
-                if(fila_point > -1){
-                    IDcliente_update = (int)model.getValueAt(fila_point, columna_point);
-                    Informacion_Cliente informacion_cliente = new Informacion_Cliente();
-                    informacion_cliente.setVisible(true);
-                }
-                
-            }
-        });
+        ObtenerDatosTabla();
         
     }
     
@@ -119,6 +107,12 @@ public class GestionarClientes extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable_clientes = new javax.swing.JTable();
         jLabel_Footer = new javax.swing.JLabel();
+        Buscar = new javax.swing.JButton();
+        txt_buscarNombre = new javax.swing.JTextField();
+        txt_buscarRUT = new javax.swing.JTextField();
+        jLabel_buscarRUT = new javax.swing.JLabel();
+        jLabel_buscarNombre = new javax.swing.JLabel();
+        jLabel_buscar = new javax.swing.JLabel();
         jLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -143,15 +137,116 @@ public class GestionarClientes extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable_clientes);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 630, 180));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 660, 180));
 
         jLabel_Footer.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_Footer.setText("Lista de usuarios registrados");
-        getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, -1, -1));
-        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 350));
+        getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 400, -1, -1));
+
+        Buscar.setBackground(new java.awt.Color(153, 153, 240));
+        Buscar.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        Buscar.setForeground(new java.awt.Color(255, 255, 255));
+        Buscar.setText("Buscar");
+        Buscar.setBorder(null);
+        Buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuscarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(Buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, 210, 35));
+
+        txt_buscarNombre.setBackground(new java.awt.Color(153, 153, 255));
+        txt_buscarNombre.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        txt_buscarNombre.setForeground(new java.awt.Color(255, 255, 255));
+        txt_buscarNombre.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txt_buscarNombre.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        getContentPane().add(txt_buscarNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 300, 210, -1));
+
+        txt_buscarRUT.setBackground(new java.awt.Color(153, 153, 255));
+        txt_buscarRUT.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        txt_buscarRUT.setForeground(new java.awt.Color(255, 255, 255));
+        txt_buscarRUT.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txt_buscarRUT.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        getContentPane().add(txt_buscarRUT, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, 210, -1));
+
+        jLabel_buscarRUT.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel_buscarRUT.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel_buscarRUT.setText("RUT:");
+        getContentPane().add(jLabel_buscarRUT, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, -1, -1));
+
+        jLabel_buscarNombre.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel_buscarNombre.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel_buscarNombre.setText("Nombre:");
+        getContentPane().add(jLabel_buscarNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 300, -1, -1));
+
+        jLabel_buscar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel_buscar.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel_buscar.setText("Buscar Cliente por:");
+        getContentPane().add(jLabel_buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, -1, -1));
+        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 660, 460));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarActionPerformed
+
+        String buscarRUT = txt_buscarRUT.getText().trim();
+        String buscarNombre = txt_buscarNombre.getText().trim();
+        String query = "";
+
+        model.setRowCount(0);
+        model.setColumnCount(0);
+
+        try {
+            Connection cn2 = Conexion.conectar();
+
+            if (buscarRUT.equals("") && buscarNombre.equals("")) {
+                JOptionPane.showMessageDialog(null, "Debe ingresar uno de los valores para poder buscar un cliente especifico");
+                query = "select id_cliente, nombre_cliente, rut_cliente, email_cliente, telefono_cliente, ult_modificacion from clientes";
+            } else if (buscarNombre.equals("")) {
+                query = "select id_cliente, nombre_cliente, rut_cliente, email_cliente, telefono_cliente, ult_modificacion from clientes where rut_cliente = '" + buscarRUT + "'";
+            } else if (buscarRUT.equals("")) {
+                query = "select id_cliente, nombre_cliente, rut_cliente, email_cliente, telefono_cliente, ult_modificacion from clientes where nombre_cliente = '" + buscarNombre + "'";
+            } else {
+                query = "select id_cliente, nombre_cliente, rut_cliente, email_cliente, telefono_cliente, ult_modificacion from clientes where rut_cliente = '" + buscarRUT + "' and nombre_cliente = '" + buscarNombre + "'";
+
+            }
+
+            PreparedStatement pst2 = cn2.prepareStatement(query);
+            ResultSet rs2 = pst2.executeQuery();
+
+            jTable_clientes = new JTable(model);
+            jScrollPane1.setViewportView(jTable_clientes);
+            
+            model.addColumn(" ");
+            model.addColumn("Nombre");
+            model.addColumn("RUT");
+            model.addColumn("Email");
+            model.addColumn("Telefono");
+            model.addColumn("Modificado Por");
+
+            while (rs2.next()) {
+                Object[] fila = new Object[6];
+
+                for (int i = 0; i < 6; i++) {
+                    fila[i] = rs2.getObject(i + 1);
+                }
+
+                model.addRow(fila);
+
+            }
+
+            cn2.close();
+
+            Limpiar();
+
+        } catch (SQLException e) {
+            System.err.println("Error al recuperar los registros de clientes. Boton Buscar " + e);
+        }
+        
+        ObtenerDatosTabla();
+
+    }//GEN-LAST:event_BuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -189,10 +284,40 @@ public class GestionarClientes extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Buscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel_Footer;
     private javax.swing.JLabel jLabel_Wallpaper;
+    private javax.swing.JLabel jLabel_buscar;
+    private javax.swing.JLabel jLabel_buscarNombre;
+    private javax.swing.JLabel jLabel_buscarRUT;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable_clientes;
+    private javax.swing.JTextField txt_buscarNombre;
+    private javax.swing.JTextField txt_buscarRUT;
     // End of variables declaration//GEN-END:variables
+
+    public void ObtenerDatosTabla(){
+        jTable_clientes.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                int fila_point = jTable_clientes.rowAtPoint(e.getPoint());
+                int columna_point = 0;
+                
+                if(fila_point > -1){
+                    IDcliente_update = (int)model.getValueAt(fila_point, columna_point);
+                    Informacion_Cliente informacion_cliente = new Informacion_Cliente();
+                    informacion_cliente.setVisible(true);
+                }
+                
+            }
+        });
+    }
+    
+    public void Limpiar() {
+        txt_buscarRUT.setText("");
+        txt_buscarNombre.setText("");
+
+    }
+
 }

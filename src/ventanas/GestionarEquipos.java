@@ -36,7 +36,7 @@ public class GestionarEquipos extends javax.swing.JFrame {
         initComponents();
         user = Login.user;
 
-        setSize(650, 390);
+        setSize(660, 460);
         setResizable(false);
         setTitle("Recepcionista - Sesión de " + user);
         setLocationRelativeTo(null);
@@ -107,6 +107,12 @@ public class GestionarEquipos extends javax.swing.JFrame {
         jLabel_Footer = new javax.swing.JLabel();
         cmb_estatus = new javax.swing.JComboBox<>();
         Mostrar = new javax.swing.JButton();
+        txt_buscarID = new javax.swing.JTextField();
+        txt_buscarNserie = new javax.swing.JTextField();
+        jLabel_buscar = new javax.swing.JLabel();
+        jLabel_buscarID = new javax.swing.JLabel();
+        jLabel_buscarNserie = new javax.swing.JLabel();
+        Buscar = new javax.swing.JButton();
         jLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -131,14 +137,14 @@ public class GestionarEquipos extends javax.swing.JFrame {
         ));
         jScrollPane_equipos.setViewportView(jTable_equipos);
 
-        getContentPane().add(jScrollPane_equipos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 630, 180));
+        getContentPane().add(jScrollPane_equipos, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 630, 180));
 
         jLabel_Footer.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_Footer.setText("Lista de equipos registrados");
-        getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 320, -1, -1));
+        getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 390, -1, -1));
 
         cmb_estatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Nuevo ingreso", "No reparado", "En revision", "Reparado", "Entregado" }));
-        getContentPane().add(cmb_estatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 40, 130, -1));
+        getContentPane().add(cmb_estatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 50, 130, -1));
 
         Mostrar.setBackground(new java.awt.Color(153, 153, 240));
         Mostrar.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
@@ -150,43 +156,84 @@ public class GestionarEquipos extends javax.swing.JFrame {
                 MostrarActionPerformed(evt);
             }
         });
-        getContentPane().add(Mostrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 250, 210, 35));
-        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 650, 390));
+        getContentPane().add(Mostrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 210, 35));
+
+        txt_buscarID.setBackground(new java.awt.Color(153, 153, 255));
+        txt_buscarID.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        txt_buscarID.setForeground(new java.awt.Color(255, 255, 255));
+        txt_buscarID.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txt_buscarID.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        getContentPane().add(txt_buscarID, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 300, 210, -1));
+
+        txt_buscarNserie.setBackground(new java.awt.Color(153, 153, 255));
+        txt_buscarNserie.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        txt_buscarNserie.setForeground(new java.awt.Color(255, 255, 255));
+        txt_buscarNserie.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txt_buscarNserie.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        getContentPane().add(txt_buscarNserie, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 300, 210, -1));
+
+        jLabel_buscar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel_buscar.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel_buscar.setText("Buscar Equipo por:");
+        getContentPane().add(jLabel_buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, -1, -1));
+
+        jLabel_buscarID.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel_buscarID.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel_buscarID.setText("ID:");
+        getContentPane().add(jLabel_buscarID, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, -1, -1));
+
+        jLabel_buscarNserie.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel_buscarNserie.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel_buscarNserie.setText("N° de Serie:");
+        getContentPane().add(jLabel_buscarNserie, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, -1, -1));
+
+        Buscar.setBackground(new java.awt.Color(153, 153, 240));
+        Buscar.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        Buscar.setForeground(new java.awt.Color(255, 255, 255));
+        Buscar.setText("Buscar");
+        Buscar.setBorder(null);
+        Buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuscarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(Buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 340, 210, 35));
+        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 660, 460));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void MostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MostrarActionPerformed
-        
+
         String selecion = cmb_estatus.getSelectedItem().toString();
         String query = "";
-        
+
         model.setRowCount(0);
         model.setColumnCount(0);
-        
-        try{
-            
+
+        try {
+
             Connection cn = Conexion.conectar();
-            
-            if(selecion.equalsIgnoreCase("Todos")){
-                
+
+            if (selecion.equalsIgnoreCase("Todos")) {
+
                 query = "select id_equipo, tipo_equipo, marca, estatus from equipos";
-                
-            }else {
+
+            } else {
                 query = "select id_equipo, tipo_equipo, marca, estatus from equipos where estatus = '" + selecion + "'";
             }
-            
+
             PreparedStatement pst = cn.prepareStatement(query);
             ResultSet rs = pst.executeQuery();
-            
+
             jTable_equipos = new JTable(model);
             jScrollPane_equipos.setViewportView(jTable_equipos);
-            
+
             model.addColumn(" ");
             model.addColumn("Tipo");
             model.addColumn("Marca");
             model.addColumn("Estatus");
-            
+
             while (rs.next()) {
                 Object[] fila = new Object[4];
 
@@ -197,17 +244,75 @@ public class GestionarEquipos extends javax.swing.JFrame {
                 model.addRow(fila);
 
             }
-            
+
             cn.close();
-            
-        }catch (SQLException e){
-            System.err.println("Error al recuperar los registros de equipo. " + e);
-            
+
+        } catch (SQLException e) {
+            System.err.println("Error al recuperar los registros de equipo. Boton Mostar " + e);
+
         }
-        
+
         ObtenerDatosTabla();
 
     }//GEN-LAST:event_MostrarActionPerformed
+
+    private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarActionPerformed
+
+        String buscarID = txt_buscarID.getText().trim();
+        String buscarNserie = txt_buscarNserie.getText().trim();
+        String query = "";
+
+        model.setRowCount(0);
+        model.setColumnCount(0);
+
+        try {
+            Connection cn2 = Conexion.conectar();
+
+            if (buscarID.equals("") && buscarNserie.equals("")) {
+                JOptionPane.showMessageDialog(null, "Debe ingresar uno o ambos valores para poder buscar un equipo por este metodo");
+                query = "select id_equipo, tipo_equipo, marca, estatus from equipos";
+            } else if (buscarNserie.equals("")) {
+                query = "select id_equipo, tipo_equipo, marca, estatus from equipos where id_equipo = '" + buscarID + "'";
+            } else if (buscarID.equals("")) {
+                query = "select id_equipo, tipo_equipo, marca, estatus from equipos where num_serie = '" + buscarNserie + "'";
+            } else {
+                query = "select id_equipo, tipo_equipo, marca, estatus from equipos where id_equipo = '" + buscarID + "' and num_serie = '" + buscarNserie + "'";
+
+            }
+
+            PreparedStatement pst2 = cn2.prepareStatement(query);
+            ResultSet rs2 = pst2.executeQuery();
+
+            jTable_equipos = new JTable(model);
+            jScrollPane_equipos.setViewportView(jTable_equipos);
+
+            model.addColumn(" ");
+            model.addColumn("Tipo");
+            model.addColumn("Marca");
+            model.addColumn("Estatus");
+
+            while (rs2.next()) {
+                Object[] fila = new Object[4];
+
+                for (int i = 0; i < 4; i++) {
+                    fila[i] = rs2.getObject(i + 1);
+                }
+
+                model.addRow(fila);
+
+            }
+
+            cn2.close();
+
+            Limpiar();
+
+        } catch (SQLException e) {
+            System.err.println("Error al recuperar los registros de equipo. Boton Buscar " + e);
+        }
+
+        ObtenerDatosTabla();
+
+    }//GEN-LAST:event_BuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -246,13 +351,19 @@ public class GestionarEquipos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Buscar;
     private javax.swing.JButton Mostrar;
     private javax.swing.JComboBox<String> cmb_estatus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel_Footer;
     private javax.swing.JLabel jLabel_Wallpaper;
+    private javax.swing.JLabel jLabel_buscar;
+    private javax.swing.JLabel jLabel_buscarID;
+    private javax.swing.JLabel jLabel_buscarNserie;
     private javax.swing.JScrollPane jScrollPane_equipos;
     private javax.swing.JTable jTable_equipos;
+    private javax.swing.JTextField txt_buscarID;
+    private javax.swing.JTextField txt_buscarNserie;
     // End of variables declaration//GEN-END:variables
 
     public void ObtenerDatosTabla() {
@@ -270,6 +381,12 @@ public class GestionarEquipos extends javax.swing.JFrame {
 
             }
         });
+    }
+
+    public void Limpiar() {
+        txt_buscarID.setText("");
+        txt_buscarNserie.setText("");
+
     }
 
 }

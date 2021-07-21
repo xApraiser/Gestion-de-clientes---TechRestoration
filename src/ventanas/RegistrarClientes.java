@@ -31,7 +31,7 @@ public class RegistrarClientes extends javax.swing.JFrame {
         user = Login.user;
         
         setTitle("Registrar nuevo cliente - Sesión de " + user);
-        setSize(530,370);
+        setSize(530,410);
         setResizable(false);
         setLocationRelativeTo(null);
         
@@ -71,6 +71,8 @@ public class RegistrarClientes extends javax.swing.JFrame {
         txt_direccion = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel_Footer = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txt_rut = new javax.swing.JTextField();
         jLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -90,17 +92,17 @@ public class RegistrarClientes extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Email:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Telefono:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Direccion:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -117,19 +119,19 @@ public class RegistrarClientes extends javax.swing.JFrame {
         txt_mail.setForeground(new java.awt.Color(255, 255, 255));
         txt_mail.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_mail.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getContentPane().add(txt_mail, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 210, -1));
+        getContentPane().add(txt_mail, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 210, -1));
 
         txt_telefono.setBackground(new java.awt.Color(153, 153, 255));
         txt_telefono.setForeground(new java.awt.Color(255, 255, 255));
         txt_telefono.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_telefono.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getContentPane().add(txt_telefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 210, -1));
+        getContentPane().add(txt_telefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 210, -1));
 
         txt_direccion.setBackground(new java.awt.Color(153, 153, 255));
         txt_direccion.setForeground(new java.awt.Color(255, 255, 255));
         txt_direccion.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_direccion.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        getContentPane().add(txt_direccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 210, -1));
+        getContentPane().add(txt_direccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 210, -1));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -142,8 +144,19 @@ public class RegistrarClientes extends javax.swing.JFrame {
         jLabel_Footer.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel_Footer.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_Footer.setText("Registro de Clientes");
-        getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 300, -1, -1));
-        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 530, 370));
+        getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, -1, -1));
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("RUT:");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, -1));
+
+        txt_rut.setBackground(new java.awt.Color(153, 153, 255));
+        txt_rut.setForeground(new java.awt.Color(255, 255, 255));
+        txt_rut.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txt_rut.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        getContentPane().add(txt_rut, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 210, -1));
+        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 530, 410));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -151,9 +164,10 @@ public class RegistrarClientes extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         int validacion = 0;
-        String nombre, mail, telefono, direccion;
+        String nombre, rut, mail, telefono, direccion;
         
         nombre = txt_nombre.getText().trim();
+        rut = txt_rut.getText().trim();
         mail = txt_mail.getText().trim();
         telefono = txt_telefono.getText().trim();
         direccion = txt_direccion.getText().trim();
@@ -162,6 +176,12 @@ public class RegistrarClientes extends javax.swing.JFrame {
             txt_nombre.setBackground(Color.red);
             validacion++;
         }
+        
+        if(rut.equals("")){
+            txt_rut.setBackground(Color.red);
+            validacion++;
+        }
+        
         if(mail.equals("")){
             txt_mail.setBackground(Color.red);
             validacion++;
@@ -181,13 +201,15 @@ public class RegistrarClientes extends javax.swing.JFrame {
                 
                 Connection cn = Conexion.conectar();
                 PreparedStatement pst = cn.prepareStatement(
-                    "insert into clientes values (?,?,?,?,?,?)");
+                    "insert into clientes values (?,?,?,?,?,?,?)");
+                
                 pst.setInt(1, 0);
                 pst.setString(2, nombre );
-                pst.setString(3, mail);
-                pst.setString(4, telefono);
-                pst.setString(5, direccion);
-                pst.setString(6, user);
+                pst.setString(3, rut);
+                pst.setString(4, mail);
+                pst.setString(5, telefono);
+                pst.setString(6, direccion);
+                pst.setString(7, user);
                 
                 pst.executeUpdate();
                 cn.close();
@@ -195,6 +217,7 @@ public class RegistrarClientes extends javax.swing.JFrame {
                 Limpiar();
                 
                 txt_nombre.setBackground(Color.green);
+                txt_rut.setBackground(Color.green);
                 txt_mail.setBackground(Color.green);
                 txt_telefono.setBackground(Color.green);
                 txt_direccion.setBackground(Color.green);
@@ -256,17 +279,20 @@ public class RegistrarClientes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel_Footer;
     private javax.swing.JLabel jLabel_Wallpaper;
     private javax.swing.JTextField txt_direccion;
     private javax.swing.JTextField txt_mail;
     private javax.swing.JTextField txt_nombre;
+    private javax.swing.JTextField txt_rut;
     private javax.swing.JTextField txt_telefono;
     // End of variables declaration//GEN-END:variables
 
     
     public void Limpiar(){
         txt_nombre.setText("");
+        txt_rut.setText("");
         txt_mail.setText("");
         txt_telefono.setText("");
         txt_direccion.setText("");
