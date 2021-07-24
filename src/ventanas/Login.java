@@ -173,6 +173,8 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Debes ingresar los datos solicitados");
         }
         
+        Limpiar();
+        
     }//GEN-LAST:event_jButton_IniciarSesionActionPerformed
 
     /**
@@ -220,4 +222,9 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPasswordField txt_password;
     private javax.swing.JTextField txt_user;
     // End of variables declaration//GEN-END:variables
+
+    public void Limpiar(){
+        txt_user.setText("");
+        txt_password.setText("");
+    }
 }

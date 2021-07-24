@@ -82,12 +82,12 @@ public class Tecnico extends javax.swing.JFrame {
 
         jLabel_NombreUsuario = new javax.swing.JLabel();
         jButton_GestionarEquipos = new javax.swing.JButton();
-        jButton_GraficaEstatus = new javax.swing.JButton();
-        jButton_GraficaMarcas = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jButton_Reportes = new javax.swing.JButton();
+        jButton_Insumos = new javax.swing.JButton();
         jLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -107,37 +107,37 @@ public class Tecnico extends javax.swing.JFrame {
         });
         getContentPane().add(jButton_GestionarEquipos, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 120, 100));
 
-        jButton_GraficaEstatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/grafica.png"))); // NOI18N
-        jButton_GraficaEstatus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_GraficaEstatusActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton_GraficaEstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 80, 120, 100));
-
-        jButton_GraficaMarcas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/GraficoCircular.png"))); // NOI18N
-        jButton_GraficaMarcas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_GraficaMarcasActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton_GraficaMarcas, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 80, 120, 100));
-
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Gestion de equipo");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, -1, -1));
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Grafica de estatus");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 180, -1, -1));
+        jLabel3.setText("Reporte Interno");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 180, -1, -1));
 
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Grafica de marcas");
+        jLabel4.setText("Gestionar Insumos");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 180, -1, -1));
 
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Dashboard Tecnico");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 240, -1, -1));
+
+        jButton_Reportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/grafica.png"))); // NOI18N
+        jButton_Reportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_ReportesActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton_Reportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 80, 120, 100));
+
+        jButton_Insumos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/insumos.jpg"))); // NOI18N
+        jButton_Insumos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_InsumosActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton_Insumos, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 80, 120, 100));
         getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, 320));
 
         pack();
@@ -150,19 +150,15 @@ public class Tecnico extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton_GestionarEquiposActionPerformed
 
-    private void jButton_GraficaEstatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_GraficaEstatusActionPerformed
+    private void jButton_ReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ReportesActionPerformed
+        ReporteInterno reporteInterno = new ReporteInterno();
+        reporteInterno.setVisible(true);
+    }//GEN-LAST:event_jButton_ReportesActionPerformed
 
-        GraficarEstatus graficarEstatus = new GraficarEstatus();
-        graficarEstatus.setVisible(true);
-
-    }//GEN-LAST:event_jButton_GraficaEstatusActionPerformed
-
-    private void jButton_GraficaMarcasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_GraficaMarcasActionPerformed
-
-        GraficarMarcas graficarMarcas = new GraficarMarcas();
-        graficarMarcas.setVisible(true);
-
-    }//GEN-LAST:event_jButton_GraficaMarcasActionPerformed
+    private void jButton_InsumosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_InsumosActionPerformed
+        GestionarInsumos gestionarInsumos = new GestionarInsumos();
+        gestionarInsumos.setVisible(true);
+    }//GEN-LAST:event_jButton_InsumosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -202,8 +198,8 @@ public class Tecnico extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_GestionarEquipos;
-    private javax.swing.JButton jButton_GraficaEstatus;
-    private javax.swing.JButton jButton_GraficaMarcas;
+    private javax.swing.JButton jButton_Insumos;
+    private javax.swing.JButton jButton_Reportes;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
