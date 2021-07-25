@@ -7,11 +7,20 @@ package ventanas;
 
 import java.sql.*;
 import clases.Conexion;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileOutputStream;
 import java.util.Calendar;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -50,36 +59,6 @@ public class GestionarInsumos extends javax.swing.JFrame {
         jLabel_Wallpaper.setIcon(icono);
         this.repaint();
 
-        try {
-
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement(
-                    "select id_insumo, nombre_insumo, modelo_insumo, repuesto_para, cantidad from insumo");
-            ResultSet rs = pst.executeQuery();
-
-            jTable_insumos = new JTable();
-            jScrollPane_insumos.setViewportView(jTable_insumos);
-
-            while (rs.next()) {
-                Object[] fila = new Object[5];
-
-                for (int i = 0; i < 5; i++) {
-                    fila[i] = rs.getObject(i + 1);
-                }
-
-                model.addRow(fila);
-
-            }
-
-            cn.close();
-
-        } catch (SQLException e) {
-            System.err.println("Error al llenar tabla insumos." + e);
-            JOptionPane.showMessageDialog(null, "Error al mostrar informacion, contacte a un administrador");
-        }
-
-        ObtenerDatosTabla();
-
     }
 
     @Override
@@ -110,6 +89,7 @@ public class GestionarInsumos extends javax.swing.JFrame {
         jLabel_buscarID = new javax.swing.JLabel();
         jLabel_buscar = new javax.swing.JLabel();
         jLabel_Footer = new javax.swing.JLabel();
+        ImprimirInsumos = new javax.swing.JButton();
         jLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -123,13 +103,10 @@ public class GestionarInsumos extends javax.swing.JFrame {
 
         jTable_insumos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "", "Nombre Insumo", "Modelo Insumo", "Repuesto Para", "Cantidad"
             }
         ));
         jScrollPane_insumos.setViewportView(jTable_insumos);
@@ -212,6 +189,18 @@ public class GestionarInsumos extends javax.swing.JFrame {
         jLabel_Footer.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_Footer.setText("Gestion de insumos");
         getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 450, -1, -1));
+
+        ImprimirInsumos.setBackground(new java.awt.Color(153, 153, 240));
+        ImprimirInsumos.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        ImprimirInsumos.setForeground(new java.awt.Color(255, 255, 255));
+        ImprimirInsumos.setText("Imprimir Reporte");
+        ImprimirInsumos.setBorder(null);
+        ImprimirInsumos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ImprimirInsumosActionPerformed(evt);
+            }
+        });
+        getContentPane().add(ImprimirInsumos, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 390, 210, 35));
         getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 510));
 
         pack();
@@ -338,6 +327,71 @@ public class GestionarInsumos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_buscarModeloActionPerformed
 
+    private void ImprimirInsumosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ImprimirInsumosActionPerformed
+        Document documento = new Document();
+        
+        try{
+            String ruta = System.getProperty("user.home");
+            PdfWriter.getInstance(documento, new FileOutputStream(ruta + "//Desktop/Lista-Insumos.pdf"));
+
+            com.itextpdf.text.Image header = com.itextpdf.text.Image.getInstance("src/imagenes/logo_TechRestoration.PNG");
+            header.scaleToFit(650, 1000);
+            header.setAlignment(Chunk.ALIGN_CENTER);
+
+            Paragraph parrafo = new Paragraph();
+            parrafo.setAlignment(Paragraph.ALIGN_CENTER);
+            parrafo.add("Lista de Insumos. \n \n");
+            parrafo.setFont(FontFactory.getFont("Tahoma", 18, Font.BOLD, BaseColor.DARK_GRAY));
+
+            documento.open();
+            documento.add(header);
+            documento.add(parrafo);
+
+            PdfPTable tabla = new PdfPTable(7);
+            tabla.addCell("ID");
+            tabla.addCell("Insumo");
+            tabla.addCell("Marca del Insumo");
+            tabla.addCell("Modelo");
+            tabla.addCell("Repuesto para");
+            tabla.addCell("Numero de serie");
+            tabla.addCell("Cantidad");
+            
+            try{
+                
+                Connection cn = Conexion.conectar();
+                PreparedStatement pst = cn.prepareStatement(
+                        "select * from insumo");
+
+                ResultSet rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    do {
+
+                        tabla.addCell(rs.getString(1));
+                        tabla.addCell(rs.getString(2));
+                        tabla.addCell(rs.getString(3));
+                        tabla.addCell(rs.getString(4));
+                        tabla.addCell(rs.getString(5));
+                        tabla.addCell(rs.getString(6));
+                        tabla.addCell(Integer.toString(rs.getInt(7)));
+
+                    } while (rs.next());
+
+                    documento.add(tabla);
+                }
+                
+            }catch (SQLException e){
+                System.err.println("Error al cargar lista de Insumos. " + e);
+            }
+            
+            documento.close();
+            JOptionPane.showMessageDialog(null, "Lista de Insumos creada correctamente");
+            
+        }catch (Exception e){
+            System.err.println("Error al generar pdf" + e);
+        }
+    }//GEN-LAST:event_ImprimirInsumosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -375,6 +429,7 @@ public class GestionarInsumos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BuscarInsumos;
+    private javax.swing.JButton ImprimirInsumos;
     private javax.swing.JButton MostrarInsumos;
     private javax.swing.JComboBox<String> cmb_tipoequipo;
     private javax.swing.JButton jButton_RegistrarInsumos;

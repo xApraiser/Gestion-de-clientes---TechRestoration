@@ -267,7 +267,7 @@ public class InformacionEquipo extends javax.swing.JFrame {
 
         jLabel_Footer.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_Footer.setText("Informacion del Usuario");
-        getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 460, -1, -1));
+        getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 470, -1, -1));
         getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 670, 550));
 
         pack();

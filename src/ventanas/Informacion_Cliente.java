@@ -169,6 +169,8 @@ public class Informacion_Cliente extends javax.swing.JFrame {
         jLabel_Footer = new javax.swing.JLabel();
         txt_rut = new javax.swing.JTextField();
         jLabel_rut = new javax.swing.JLabel();
+        Mostrar = new javax.swing.JButton();
+        cmb_estatus = new javax.swing.JComboBox<>();
         jLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -303,7 +305,22 @@ public class Informacion_Cliente extends javax.swing.JFrame {
         jLabel_rut.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_rut.setText("RUT:");
         getContentPane().add(jLabel_rut, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, -1));
-        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 470));
+
+        Mostrar.setBackground(new java.awt.Color(153, 153, 240));
+        Mostrar.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        Mostrar.setForeground(new java.awt.Color(255, 255, 255));
+        Mostrar.setText("Mostrar");
+        Mostrar.setBorder(null);
+        Mostrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MostrarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(Mostrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 40, 90, 30));
+
+        cmb_estatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Nuevo ingreso", "No reparado", "En revision", "Reparado", "Entregado" }));
+        getContentPane().add(cmb_estatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 40, 130, 20));
+        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 470));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -497,6 +514,58 @@ public class Informacion_Cliente extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton_ImprimirReporteActionPerformed
 
+    private void MostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MostrarActionPerformed
+
+        String selecion = cmb_estatus.getSelectedItem().toString();
+        String query = "";
+
+        model.setRowCount(0);
+        model.setColumnCount(0);
+
+        try {
+
+            Connection cn = Conexion.conectar();
+
+            if (selecion.equalsIgnoreCase("Todos")) {
+
+                query = "select id_equipo, tipo_equipo, marca, estatus from equipos";
+
+            } else {
+                query = "select id_equipo, tipo_equipo, marca, estatus from equipos where estatus = '" + selecion + "'";
+            }
+
+            PreparedStatement pst = cn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+
+            jTable_equipos = new JTable(model);
+            jScrollPane_equipos.setViewportView(jTable_equipos);
+
+            model.addColumn(" ");
+            model.addColumn("Tipo");
+            model.addColumn("Marca");
+            model.addColumn("Estatus");
+
+            while (rs.next()) {
+                Object[] fila = new Object[4];
+
+                for (int i = 0; i < 4; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+
+                model.addRow(fila);
+
+            }
+
+            cn.close();
+
+        } catch (SQLException e) {
+            System.err.println("Error al recuperar los registros de equipo. Boton Mostar " + e);
+
+        }
+
+        ObtenerDatosTabla();
+    }//GEN-LAST:event_MostrarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -533,6 +602,8 @@ public class Informacion_Cliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Mostrar;
+    private javax.swing.JComboBox<String> cmb_estatus;
     private javax.swing.JButton jButton_Actualizar;
     private javax.swing.JButton jButton_ImprimirReporte;
     private javax.swing.JButton jButton_Registrar;
@@ -555,7 +626,22 @@ public class Informacion_Cliente extends javax.swing.JFrame {
     private javax.swing.JTextField txt_telefono;
     // End of variables declaration//GEN-END:variables
 
-    
+    public void ObtenerDatosTabla() {
+        jTable_equipos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int fila_point = jTable_equipos.rowAtPoint(e.getPoint());
+                int columna_point = 0;
+
+                if (fila_point > -1) {
+                    IDequipo_update = (int) model.getValueAt(fila_point, columna_point);
+                    InformacionEquipoTecnico info = new InformacionEquipoTecnico();
+                    info.setVisible(true);
+                }
+
+            }
+        });
+    }
     
     public void Limpiar() {
         txt_nombre.setText("");
