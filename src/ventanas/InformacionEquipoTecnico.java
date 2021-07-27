@@ -10,6 +10,7 @@ import clases.Conexion;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.util.Calendar;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -65,7 +66,7 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
         }
 
         setTitle("Equipo registrado con el ID " + IDequipo + " - Sesión de " + user);
-        setSize(670, 550);
+        setSize(750, 600);
         setResizable(false);
         setLocationRelativeTo(null);
 
@@ -75,8 +76,6 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
         Icon icono = new ImageIcon(wallpaper.getImage().getScaledInstance(jLabel_Wallpaper.getWidth(), jLabel_Wallpaper.getHeight(), Image.SCALE_DEFAULT));
         jLabel_Wallpaper.setIcon(icono);
         this.repaint();
-
-        
 
     }
 
@@ -120,6 +119,9 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
         jTextPane_comentariosTecnico = new javax.swing.JTextPane();
         jButton_Actualizar = new javax.swing.JButton();
         jLabel_Footer = new javax.swing.JLabel();
+        jLabel_id_insumo = new javax.swing.JLabel();
+        txt_IDinsumo = new javax.swing.JTextField();
+        jButton_Historial = new javax.swing.JButton();
         jLabel_Wallpaper = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -231,11 +233,11 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
         jTextPane_observaciones.setEditable(false);
         jScrollPane1.setViewportView(jTextPane_observaciones);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 130, 330, 120));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 130, 390, 120));
 
         jScrollPane2.setViewportView(jTextPane_comentariosTecnico);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 280, 330, 120));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 280, 390, 120));
 
         jButton_Actualizar.setBackground(new java.awt.Color(153, 153, 240));
         jButton_Actualizar.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
@@ -247,46 +249,155 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
                 jButton_ActualizarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton_Actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 400, 210, 35));
+        getContentPane().add(jButton_Actualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 400, 160, 35));
 
         jLabel_Footer.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_Footer.setText("Informacion del Usuario");
-        getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 460, -1, -1));
-        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 670, 550));
+        getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 530, -1, -1));
+
+        jLabel_id_insumo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel_id_insumo.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel_id_insumo.setText("ID Insumo a utilizar:");
+        getContentPane().add(jLabel_id_insumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 410, -1, 20));
+
+        txt_IDinsumo.setBackground(new java.awt.Color(153, 153, 255));
+        txt_IDinsumo.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        txt_IDinsumo.setForeground(new java.awt.Color(255, 255, 255));
+        txt_IDinsumo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txt_IDinsumo.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txt_IDinsumo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_IDinsumoKeyTyped(evt);
+            }
+        });
+        getContentPane().add(txt_IDinsumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 410, 90, -1));
+
+        jButton_Historial.setBackground(new java.awt.Color(153, 153, 240));
+        jButton_Historial.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        jButton_Historial.setForeground(new java.awt.Color(255, 255, 255));
+        jButton_Historial.setText("Acceder al Historial del equipo");
+        jButton_Historial.setBorder(null);
+        jButton_Historial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_HistorialActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton_Historial, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 450, 260, 35));
+        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 600));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ActualizarActionPerformed
-        
-        String estatus, comentariosTecnicos, tecnico;
-        
+
+        String estatus, comentariosTecnicos, tecnico, dia_ingreso, mes_ingreso, annio_ingreso, ID_insumo;
+        int Cant_insumo = 0, Insumo_update = 0;
         estatus = cmb_estatus.getSelectedItem().toString();
         comentariosTecnicos = jTextPane_comentariosTecnico.getText();
+        ID_insumo = txt_IDinsumo.getText().trim();
         tecnico = user;
-        
-        try{
-            
+
+        try {
+
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement(
-                "update equipos set estatus=?, comentarios_tenicos=?, revision_tecnica_de=? where id_equipo = '" + IDequipo + "'");
-            
+                    "update equipos set estatus=?, comentarios_tenicos=?, revision_tecnica_de=? where id_equipo = '" + IDequipo + "'");
+
             pst.setString(1, estatus);
             pst.setString(2, comentariosTecnicos);
             pst.setString(3, tecnico);
-            
+
             pst.executeUpdate();
             cn.close();
-            
-            JOptionPane.showMessageDialog(null, "Estatus del equipo actualizado");
-            this.dispose();
-            
-        }catch (SQLException e){
+
+        } catch (SQLException e) {
             System.err.println("Error al actualizar equipo. " + e);
             JOptionPane.showMessageDialog(null, "Error al actualizar equipo, contacte a un administrador");
         }
 
+        Calendar calendar = Calendar.getInstance();
+
+        dia_ingreso = Integer.toString(calendar.get(Calendar.DATE));
+        mes_ingreso = Integer.toString(calendar.get(Calendar.MONTH));
+        annio_ingreso = Integer.toString(calendar.get(Calendar.YEAR));
+
+        try {
+            Connection cn2 = Conexion.conectar();
+            PreparedStatement pst2 = cn2.prepareStatement(
+                    "insert into historial values (?,?,?,?,?,?,?,?)");
+
+            pst2.setInt(1, 0);
+            pst2.setInt(2, IDequipo);
+            pst2.setString(3, comentariosTecnicos);
+            pst2.setString(4, dia_ingreso);
+            pst2.setString(5, mes_ingreso);
+            pst2.setString(6, annio_ingreso);
+            pst2.setString(7, ID_insumo);
+            pst2.setString(8, tecnico);
+
+            pst2.executeUpdate();
+            cn2.close();
+
+            JOptionPane.showMessageDialog(null, "Estatus del equipo actualizado");
+
+        } catch (SQLException e) {
+            System.err.println("Error al ingresar informacion a historial. " + e);
+            JOptionPane.showMessageDialog(null, "Error al actualizar equipo, contacte a un administrador");
+        }
+        if (!ID_insumo.equals("")) {
+            try {
+                Connection cn3 = Conexion.conectar();
+                PreparedStatement pst3 = cn3.prepareStatement("select cantidad from insumo where id_insumo = '" + ID_insumo + "'");
+                ResultSet rs3 = pst3.executeQuery();
+
+                if (rs3.next()) {
+                    Cant_insumo = Integer.parseInt(rs3.getString(1));
+                }
+
+                cn3.close();
+
+            } catch (SQLException e) {
+                System.err.println("Error al generar cant_insumo " + e);
+                JOptionPane.showMessageDialog(null, "Error");
+            }
+
+            if (Cant_insumo > 0) {
+                Insumo_update = Cant_insumo - 1;
+            }
+
+            try {
+                Connection cn4 = Conexion.conectar();
+                PreparedStatement pst4 = cn4.prepareStatement("update insumo set cantidad=? where id_insumo = '" + ID_insumo + "'");
+                
+                pst4.setInt(1, Insumo_update);
+
+                pst4.executeUpdate();
+                cn4.close();
+            } catch (SQLException e) {
+                System.err.println("Error al actualizar insumo " + e);
+                JOptionPane.showMessageDialog(null, "Error");
+            }
+
+        }
+
+
     }//GEN-LAST:event_jButton_ActualizarActionPerformed
+
+    private void txt_IDinsumoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_IDinsumoKeyTyped
+        char validar = evt.getKeyChar();
+
+        if (Character.isLetter(validar)) {
+            getToolkit().beep();
+            evt.consume();
+
+            JOptionPane.showMessageDialog(null, "Ingrese el valor numerico del ID");
+        }
+    }//GEN-LAST:event_txt_IDinsumoKeyTyped
+
+    private void jButton_HistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_HistorialActionPerformed
+        Historial_equipo historialEquipo = new Historial_equipo();
+        historialEquipo.setVisible(true);
+    }//GEN-LAST:event_jButton_HistorialActionPerformed
 
     /**
      * @param args the command line arguments
@@ -329,6 +440,7 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmb_marcas;
     private javax.swing.JComboBox<String> cmb_tipoequipo;
     private javax.swing.JButton jButton_Actualizar;
+    private javax.swing.JButton jButton_Historial;
     private javax.swing.JLabel jLabel_Footer;
     private javax.swing.JLabel jLabel_Nombre;
     private javax.swing.JLabel jLabel_Nombre1;
@@ -340,12 +452,14 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_Nombre7;
     private javax.swing.JLabel jLabel_Nombre8;
     private javax.swing.JLabel jLabel_Wallpaper;
+    private javax.swing.JLabel jLabel_id_insumo;
     private javax.swing.JLabel jLabel_revisionTecnicaDe;
     private javax.swing.JLabel jLabel_titulo;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextPane jTextPane_comentariosTecnico;
     private javax.swing.JTextPane jTextPane_observaciones;
+    private javax.swing.JTextField txt_IDinsumo;
     private javax.swing.JTextField txt_NombreCliente;
     private javax.swing.JTextField txt_fecha;
     private javax.swing.JTextField txt_modelo;

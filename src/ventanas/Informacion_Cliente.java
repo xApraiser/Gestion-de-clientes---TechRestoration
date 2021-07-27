@@ -528,10 +528,10 @@ public class Informacion_Cliente extends javax.swing.JFrame {
 
             if (selecion.equalsIgnoreCase("Todos")) {
 
-                query = "select id_equipo, tipo_equipo, marca, estatus from equipos";
+                query = "select id_equipo, tipo_equipo, marca, estatus from equipos where id_cliente = '" + IDcliente_update + "'";
 
             } else {
-                query = "select id_equipo, tipo_equipo, marca, estatus from equipos where estatus = '" + selecion + "'";
+                query = "select id_equipo, tipo_equipo, marca, estatus from equipos where estatus = '" + selecion + "' and id_cliente = '" + IDcliente_update + "'";
             }
 
             PreparedStatement pst = cn.prepareStatement(query);
@@ -540,8 +540,8 @@ public class Informacion_Cliente extends javax.swing.JFrame {
             jTable_equipos = new JTable(model);
             jScrollPane_equipos.setViewportView(jTable_equipos);
 
-            model.addColumn(" ");
-            model.addColumn("Tipo");
+            model.addColumn("ID Equipo");
+            model.addColumn("Tipo de equipo");
             model.addColumn("Marca");
             model.addColumn("Estatus");
 
