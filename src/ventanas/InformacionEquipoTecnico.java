@@ -257,7 +257,7 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
 
         jLabel_id_insumo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel_id_insumo.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel_id_insumo.setText("ID Insumo a utilizar:");
+        jLabel_id_insumo.setText("Insumo:");
         getContentPane().add(jLabel_id_insumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 410, -1, 20));
 
         txt_IDinsumo.setBackground(new java.awt.Color(153, 153, 255));
@@ -270,7 +270,7 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
                 txt_IDinsumoKeyTyped(evt);
             }
         });
-        getContentPane().add(txt_IDinsumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 410, 90, -1));
+        getContentPane().add(txt_IDinsumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 410, 170, -1));
 
         jButton_Historial.setBackground(new java.awt.Color(153, 153, 240));
         jButton_Historial.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
@@ -290,11 +290,11 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
 
     private void jButton_ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ActualizarActionPerformed
 
-        String estatus, comentariosTecnicos, tecnico, dia_ingreso, mes_ingreso, annio_ingreso, ID_insumo;
-        int Cant_insumo = 0, Insumo_update = 0;
+        String estatus, comentariosTecnicos, tecnico, dia_ingreso, mes_ingreso, annio_ingreso, nombreInsumo;
+        int Cant_insumo = 0, Insumo_update = 0, IDinsumo = 0;
         estatus = cmb_estatus.getSelectedItem().toString();
         comentariosTecnicos = jTextPane_comentariosTecnico.getText();
-        ID_insumo = txt_IDinsumo.getText().trim();
+        nombreInsumo = txt_IDinsumo.getText().trim();
         tecnico = user;
 
         try {
@@ -315,6 +315,18 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error al actualizar equipo, contacte a un administrador");
         }
 
+        try {
+            Connection cn5 = Conexion.conectar();
+            PreparedStatement pst5 = cn5.prepareStatement("select id_insumo from insumo where nombre_insumo = '" + nombreInsumo + "'");
+            ResultSet rs5 = pst5.executeQuery();
+
+            if (rs5.next()) {
+                IDinsumo = rs5.getInt(1);
+            }
+        } catch (SQLException e) {
+
+        }
+
         Calendar calendar = Calendar.getInstance();
 
         dia_ingreso = Integer.toString(calendar.get(Calendar.DATE));
@@ -324,7 +336,7 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
         try {
             Connection cn2 = Conexion.conectar();
             PreparedStatement pst2 = cn2.prepareStatement(
-                    "insert into historial values (?,?,?,?,?,?,?,?)");
+                    "insert into historial values (?,?,?,?,?,?,?,?,?)");
 
             pst2.setInt(1, 0);
             pst2.setInt(2, IDequipo);
@@ -332,8 +344,9 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
             pst2.setString(4, dia_ingreso);
             pst2.setString(5, mes_ingreso);
             pst2.setString(6, annio_ingreso);
-            pst2.setString(7, ID_insumo);
-            pst2.setString(8, tecnico);
+            pst2.setInt(7, IDinsumo);
+            pst2.setString(8, nombreInsumo);
+            pst2.setString(9, tecnico);
 
             pst2.executeUpdate();
             cn2.close();
@@ -344,14 +357,14 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
             System.err.println("Error al ingresar informacion a historial. " + e);
             JOptionPane.showMessageDialog(null, "Error al actualizar equipo, contacte a un administrador");
         }
-        if (!ID_insumo.equals("")) {
+        if (!nombreInsumo.equals("")) {
             try {
                 Connection cn3 = Conexion.conectar();
-                PreparedStatement pst3 = cn3.prepareStatement("select cantidad from insumo where id_insumo = '" + ID_insumo + "'");
+                PreparedStatement pst3 = cn3.prepareStatement("select cantidad from insumo where nombre_insumo = '" + nombreInsumo + "'");
                 ResultSet rs3 = pst3.executeQuery();
 
                 if (rs3.next()) {
-                    Cant_insumo = Integer.parseInt(rs3.getString(1));
+                    Cant_insumo = rs3.getInt(1);
                 }
 
                 cn3.close();
@@ -367,8 +380,8 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
 
             try {
                 Connection cn4 = Conexion.conectar();
-                PreparedStatement pst4 = cn4.prepareStatement("update insumo set cantidad=? where id_insumo = '" + ID_insumo + "'");
-                
+                PreparedStatement pst4 = cn4.prepareStatement("update insumo set cantidad=? where nombre_insumo = '" + nombreInsumo + "'");
+
                 pst4.setInt(1, Insumo_update);
 
                 pst4.executeUpdate();
@@ -384,14 +397,7 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_ActualizarActionPerformed
 
     private void txt_IDinsumoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_IDinsumoKeyTyped
-        char validar = evt.getKeyChar();
 
-        if (Character.isLetter(validar)) {
-            getToolkit().beep();
-            evt.consume();
-
-            JOptionPane.showMessageDialog(null, "Ingrese el valor numerico del ID");
-        }
     }//GEN-LAST:event_txt_IDinsumoKeyTyped
 
     private void jButton_HistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_HistorialActionPerformed

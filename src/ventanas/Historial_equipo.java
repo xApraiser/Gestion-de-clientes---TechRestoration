@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Asus
  */
 public class Historial_equipo extends javax.swing.JFrame {
-    
+
     int IDequipo = 0;
     String user = "";
     DefaultTableModel model = new DefaultTableModel();
@@ -33,10 +33,10 @@ public class Historial_equipo extends javax.swing.JFrame {
      */
     public Historial_equipo() {
         initComponents();
-        
+
         user = Login.user;
         IDequipo = GestionarEquipos.IDequipo_update;
-        
+
         setTitle("Historial del equipo registrado con el ID " + IDequipo + " - Sesión de " + user);
         setSize(850, 630);
         setResizable(false);
@@ -48,22 +48,22 @@ public class Historial_equipo extends javax.swing.JFrame {
         Icon icono = new ImageIcon(wallpaper.getImage().getScaledInstance(jLabel_Wallpaper.getWidth(), jLabel_Wallpaper.getHeight(), Image.SCALE_DEFAULT));
         jLabel_Wallpaper.setIcon(icono);
         this.repaint();
-        
-        try{
+
+        try {
             Connection cn = Conexion.conectar();
             PreparedStatement pst = cn.prepareStatement("select comentario_historial, dia, mes, annio, insumo, revision_tecnica_de from historial where id_equipo = '" + IDequipo + "'");
             ResultSet rs = pst.executeQuery();
-            
+
             jTable_historial = new JTable(model);
             jScrollPane_historial.setViewportView(jTable_historial);
-            
+
             model.addColumn("Comentario");
             model.addColumn("Dia");
             model.addColumn("Mes");
             model.addColumn("Año");
-            model.addColumn("ID del Insumo Usado");
+            model.addColumn("Insumo Usado");
             model.addColumn("Registro del Tecnico");
-            
+
             while (rs.next()) {
                 Object[] fila = new Object[6];
 
@@ -76,12 +76,12 @@ public class Historial_equipo extends javax.swing.JFrame {
             }
 
             cn.close();
-        }catch(SQLException e) {
-            
+        } catch (SQLException e) {
+
         }
-        
+
     }
-    
+
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("imagenes/Logo_TechSinFondo.png"));
@@ -120,7 +120,7 @@ public class Historial_equipo extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Comentario", "Dia", "Mes", "Año", "ID del Insumo usado", "Registro del tecnico"
+                "Comentario", "Dia", "Mes", "Año", "Insumo Usado", "Registro del tecnico"
             }
         ));
         jScrollPane_historial.setViewportView(jTable_historial);
