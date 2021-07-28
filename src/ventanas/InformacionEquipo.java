@@ -81,7 +81,7 @@ public class InformacionEquipo extends javax.swing.JFrame {
         }
         
         setTitle("Equipo del cliente " + nom_cliente);
-        setSize(670, 550);
+        setSize(670, 600);
         setResizable(false);
         setLocationRelativeTo(null);
 
@@ -134,6 +134,7 @@ public class InformacionEquipo extends javax.swing.JFrame {
         jTextPane_observaciones = new javax.swing.JTextPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextPane_comentariosTecnico = new javax.swing.JTextPane();
+        jButton_Historial = new javax.swing.JButton();
         jButton_Actualizar = new javax.swing.JButton();
         jLabel_Footer = new javax.swing.JLabel();
         jLabel_Wallpaper = new javax.swing.JLabel();
@@ -253,6 +254,18 @@ public class InformacionEquipo extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 280, 330, 120));
 
+        jButton_Historial.setBackground(new java.awt.Color(153, 153, 240));
+        jButton_Historial.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        jButton_Historial.setForeground(new java.awt.Color(255, 255, 255));
+        jButton_Historial.setText("Acceder al Historial del equipo");
+        jButton_Historial.setBorder(null);
+        jButton_Historial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_HistorialActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton_Historial, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 450, 260, 35));
+
         jButton_Actualizar.setBackground(new java.awt.Color(153, 153, 240));
         jButton_Actualizar.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
         jButton_Actualizar.setForeground(new java.awt.Color(255, 255, 255));
@@ -267,8 +280,8 @@ public class InformacionEquipo extends javax.swing.JFrame {
 
         jLabel_Footer.setForeground(new java.awt.Color(255, 255, 255));
         jLabel_Footer.setText("Informacion del Usuario");
-        getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 470, -1, -1));
-        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 670, 550));
+        getContentPane().add(jLabel_Footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 530, -1, -1));
+        getContentPane().add(jLabel_Wallpaper, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 670, 600));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -341,6 +354,11 @@ public class InformacionEquipo extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton_ActualizarActionPerformed
 
+    private void jButton_HistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_HistorialActionPerformed
+        Historial_equipo historialEquipo = new Historial_equipo();
+        historialEquipo.setVisible(true);
+    }//GEN-LAST:event_jButton_HistorialActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -381,6 +399,7 @@ public class InformacionEquipo extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmb_marcas;
     private javax.swing.JComboBox<String> cmb_tipoequipo;
     private javax.swing.JButton jButton_Actualizar;
+    private javax.swing.JButton jButton_Historial;
     private javax.swing.JLabel jLabel_Footer;
     private javax.swing.JLabel jLabel_Nombre;
     private javax.swing.JLabel jLabel_Nombre1;

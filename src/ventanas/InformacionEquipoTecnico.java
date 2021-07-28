@@ -290,7 +290,7 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
 
     private void jButton_ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ActualizarActionPerformed
 
-        String estatus, comentariosTecnicos, tecnico, dia_ingreso, mes_ingreso, annio_ingreso, nombreInsumo;
+        String estatus, comentariosTecnicos, tecnico, dia_ingreso, mes_ingreso, annio_ingreso, nombreInsumo, Nombre_Insumo = "";
         int Cant_insumo = 0, Insumo_update = 0, IDinsumo = 0;
         estatus = cmb_estatus.getSelectedItem().toString();
         comentariosTecnicos = jTextPane_comentariosTecnico.getText();
@@ -298,99 +298,110 @@ public class InformacionEquipoTecnico extends javax.swing.JFrame {
         tecnico = user;
 
         try {
-
-            Connection cn = Conexion.conectar();
-            PreparedStatement pst = cn.prepareStatement(
-                    "update equipos set estatus=?, comentarios_tenicos=?, revision_tecnica_de=? where id_equipo = '" + IDequipo + "'");
-
-            pst.setString(1, estatus);
-            pst.setString(2, comentariosTecnicos);
-            pst.setString(3, tecnico);
-
-            pst.executeUpdate();
-            cn.close();
-
-        } catch (SQLException e) {
-            System.err.println("Error al actualizar equipo. " + e);
-            JOptionPane.showMessageDialog(null, "Error al actualizar equipo, contacte a un administrador");
-        }
-
-        try {
             Connection cn5 = Conexion.conectar();
-            PreparedStatement pst5 = cn5.prepareStatement("select id_insumo from insumo where nombre_insumo = '" + nombreInsumo + "'");
+            PreparedStatement pst5 = cn5.prepareStatement("select id_insumo, nombre_insumo from insumo where nombre_insumo = '" + nombreInsumo + "'");
             ResultSet rs5 = pst5.executeQuery();
 
             if (rs5.next()) {
                 IDinsumo = rs5.getInt(1);
+                Nombre_Insumo = rs5.getString(2);
             }
+
+            cn5.close();
         } catch (SQLException e) {
+            System.err.println("Error " + e);
+            JOptionPane.showMessageDialog(null, "Error");
 
         }
 
-        Calendar calendar = Calendar.getInstance();
-
-        dia_ingreso = Integer.toString(calendar.get(Calendar.DATE));
-        mes_ingreso = Integer.toString(calendar.get(Calendar.MONTH));
-        annio_ingreso = Integer.toString(calendar.get(Calendar.YEAR));
-
-        try {
-            Connection cn2 = Conexion.conectar();
-            PreparedStatement pst2 = cn2.prepareStatement(
-                    "insert into historial values (?,?,?,?,?,?,?,?,?)");
-
-            pst2.setInt(1, 0);
-            pst2.setInt(2, IDequipo);
-            pst2.setString(3, comentariosTecnicos);
-            pst2.setString(4, dia_ingreso);
-            pst2.setString(5, mes_ingreso);
-            pst2.setString(6, annio_ingreso);
-            pst2.setInt(7, IDinsumo);
-            pst2.setString(8, nombreInsumo);
-            pst2.setString(9, tecnico);
-
-            pst2.executeUpdate();
-            cn2.close();
-
-            JOptionPane.showMessageDialog(null, "Estatus del equipo actualizado");
-
-        } catch (SQLException e) {
-            System.err.println("Error al ingresar informacion a historial. " + e);
-            JOptionPane.showMessageDialog(null, "Error al actualizar equipo, contacte a un administrador");
-        }
-        if (!nombreInsumo.equals("")) {
+        if (Nombre_Insumo.equalsIgnoreCase(nombreInsumo)) {
             try {
-                Connection cn3 = Conexion.conectar();
-                PreparedStatement pst3 = cn3.prepareStatement("select cantidad from insumo where nombre_insumo = '" + nombreInsumo + "'");
-                ResultSet rs3 = pst3.executeQuery();
 
-                if (rs3.next()) {
-                    Cant_insumo = rs3.getInt(1);
+                Connection cn = Conexion.conectar();
+                PreparedStatement pst = cn.prepareStatement(
+                        "update equipos set estatus=?, comentarios_tenicos=?, revision_tecnica_de=? where id_equipo = '" + IDequipo + "'");
+
+                pst.setString(1, estatus);
+                pst.setString(2, comentariosTecnicos);
+                pst.setString(3, tecnico);
+
+                pst.executeUpdate();
+                cn.close();
+
+            } catch (SQLException e) {
+                System.err.println("Error al actualizar equipo. " + e);
+                JOptionPane.showMessageDialog(null, "Error al actualizar equipo, contacte a un administrador");
+            }
+
+            Calendar calendar = Calendar.getInstance();
+
+            dia_ingreso = Integer.toString(calendar.get(Calendar.DATE));
+            mes_ingreso = Integer.toString(calendar.get(Calendar.MONTH));
+            annio_ingreso = Integer.toString(calendar.get(Calendar.YEAR));
+
+            try {
+                Connection cn2 = Conexion.conectar();
+                PreparedStatement pst2 = cn2.prepareStatement(
+                        "insert into historial values (?,?,?,?,?,?,?,?,?)");
+
+                pst2.setInt(1, 0);
+                pst2.setInt(2, IDinsumo);
+                pst2.setInt(3, IDequipo);
+                pst2.setString(4, comentariosTecnicos);
+                pst2.setString(5, dia_ingreso);
+                pst2.setString(6, mes_ingreso);
+                pst2.setString(7, annio_ingreso);
+                pst2.setString(8, Nombre_Insumo);
+                pst2.setString(9, tecnico);
+
+                pst2.executeUpdate();
+                cn2.close();
+
+                JOptionPane.showMessageDialog(null, "Estatus del equipo actualizado");
+
+            } catch (SQLException e) {
+                System.err.println("Error al ingresar informacion a historial. " + e);
+                JOptionPane.showMessageDialog(null, "Error al actualizar equipo, contacte a un administrador");
+            }
+            if (!nombreInsumo.equals("")) {
+                try {
+                    Connection cn3 = Conexion.conectar();
+                    PreparedStatement pst3 = cn3.prepareStatement("select cantidad from insumo where nombre_insumo = '" + nombreInsumo + "'");
+                    ResultSet rs3 = pst3.executeQuery();
+
+                    if (rs3.next()) {
+                        Cant_insumo = rs3.getInt(1);
+                    }
+
+                    cn3.close();
+
+                } catch (SQLException e) {
+                    System.err.println("Error al generar cant_insumo " + e);
+                    JOptionPane.showMessageDialog(null, "Error");
                 }
 
-                cn3.close();
+                if (Cant_insumo > 0) {
+                    Insumo_update = Cant_insumo - 1;
+                }else {
+                    JOptionPane.showMessageDialog(null, "Segun la base de datos, no hay existencia de: +" + Nombre_Insumo + " en inventario");
+                }
 
-            } catch (SQLException e) {
-                System.err.println("Error al generar cant_insumo " + e);
-                JOptionPane.showMessageDialog(null, "Error");
+                try {
+                    Connection cn4 = Conexion.conectar();
+                    PreparedStatement pst4 = cn4.prepareStatement("update insumo set cantidad=? where nombre_insumo = '" + nombreInsumo + "'");
+
+                    pst4.setInt(1, Insumo_update);
+
+                    pst4.executeUpdate();
+                    cn4.close();
+                } catch (SQLException e) {
+                    System.err.println("Error al actualizar insumo " + e);
+                    JOptionPane.showMessageDialog(null, "Error");
+                }
+
             }
-
-            if (Cant_insumo > 0) {
-                Insumo_update = Cant_insumo - 1;
-            }
-
-            try {
-                Connection cn4 = Conexion.conectar();
-                PreparedStatement pst4 = cn4.prepareStatement("update insumo set cantidad=? where nombre_insumo = '" + nombreInsumo + "'");
-
-                pst4.setInt(1, Insumo_update);
-
-                pst4.executeUpdate();
-                cn4.close();
-            } catch (SQLException e) {
-                System.err.println("Error al actualizar insumo " + e);
-                JOptionPane.showMessageDialog(null, "Error");
-            }
-
+        }else{
+            JOptionPane.showMessageDialog(null, "No existe ningun insumo con ese nombre");
         }
 
 
